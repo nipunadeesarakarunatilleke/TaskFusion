@@ -1,0 +1,14 @@
+{
+  "name": "task-fusion-marketplace",
+  "description": "Team marketplace for the TaskFusion role-based agentic SDLC workflow",
+  "owner": {
+    "name": "Nipuna Karunatilleke"
+  },
+  "plugins": [
+    {
+      "name": "task-fusion",
+      "source": "./task-fusion-marketplace/plugins/task-fusion",
+      "description": "Role-based SDLC workflow: BA, Architect, Tech Lead, Developer and Code Archaeologist agents with guardrails"
+    }
+  ]
+}
