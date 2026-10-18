@@ -1,0 +1,190 @@
+<!doctype html>
+<!--
+  Source for TaskFusion-Architecture.png. To re-render after editing (macOS, from the repo root):
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --hide-scrollbars \
+    --window-size=2000,1250 --force-device-scale-factor=1.8 \
+    --screenshot="$PWD/TaskFusion-Architecture.png" "file://$PWD/docs/architecture.html"
+-->
+<html><head><meta charset="utf-8">
+<style>
+:root{
+  --ink:#1f2328; --muted:#5b6472; --line:#c9d1dc; --panel:#f7f9fb;
+  --ba:#0f766e; --ba-bg:#e7f4f1; --ar:#6d28d9; --ar-bg:#f1ebfd;
+  --tl:#1d4ed8; --tl-bg:#e8effd; --dv:#c2410c; --dv-bg:#fdf0e9;
+  --ca:#be185d; --ca-bg:#fce8f1; --gate:#b45309; --red:#dc2626;
+}
+*{box-sizing:border-box}
+body{margin:0;width:2000px;height:1250px;background:#fff;color:var(--ink);
+  font-family:"Inter","SF Pro Text",-apple-system,"Helvetica Neue",Arial,sans-serif;position:relative;overflow:hidden}
+.mono{font-family:"SF Mono",Menlo,Consolas,monospace}
+h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;letter-spacing:-.3px}
+.sub{position:absolute;left:44px;top:82px;font-size:17px;color:var(--muted)}
+.box{position:absolute;border:2px solid var(--line);border-radius:14px;background:#fff}
+.panel{background:#fff;border-color:#bcc5d1}
+.label{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}
+.cmd{border:1.5px solid var(--line);border-radius:10px;padding:12px 16px;background:#fff}
+.cmd .t{font-size:16px;font-weight:600}
+.cmd .d{font-size:14px;color:var(--muted);margin-top:6px}
+.row{display:flex;align-items:stretch}
+.stage{width:148px;height:134px;border:2px solid;border-radius:10px;overflow:hidden;text-align:center;position:relative}
+.stage .hd{color:#fff;font-size:13px;font-weight:600;padding:6px 0}
+.stage .nm{font-size:19px;font-weight:600;margin-top:10px}
+.stage .sk{font-size:12.5px;margin-top:6px}
+.stage .out{font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.35}
+.arrow{width:24px;display:flex;align-items:center;justify-content:center;color:#6b7686;font-size:18px}
+.gate{position:absolute;background:var(--gate);color:#fff;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:10px;letter-spacing:.4px}
+.agent{width:223px;height:200px;border:2px solid;border-left-width:6px;border-radius:10px;padding:12px 14px;position:relative;background:#fff}
+.agent .n{font-size:17px;font-weight:700}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;border:1.5px solid;margin-top:6px}
+.agent .d{font-size:13.5px;line-height:1.45;margin-top:8px}
+.agent .tl{position:absolute;left:14px;bottom:12px;right:10px;font-size:11.5px;color:var(--muted)}
+.agent .tl .mono{font-size:11px;color:var(--ink);display:block;margin-top:3px}
+.hook{border:2px solid;border-radius:10px;padding:14px 18px;height:104px}
+.hook .h{font-size:15px;font-weight:700}
+.hook .h .mono{font-weight:400;margin-left:30px;color:var(--ink);font-size:14.5px}
+.hook .d{font-size:14.5px;line-height:1.5;margin-top:8px}
+.repo{border:1.5px solid var(--line);border-left:5px solid;border-radius:8px;padding:9px 14px;margin-bottom:11px;background:#fff}
+.repo .p{font-size:13.5px;font-weight:600}
+.repo .d{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.45}
+.new{display:inline-block;font-size:10px;font-weight:700;color:#fff;background:var(--ca);padding:1px 6px;border-radius:8px;margin-left:6px;vertical-align:2px;font-family:"Inter",-apple-system,sans-serif}
+.legend{position:absolute;left:44px;top:1140px;display:flex;align-items:center;gap:30px;font-size:15px}
+.legend b{font-size:16px}
+.sw{display:inline-block;width:16px;height:16px;border-radius:4px;vertical-align:-3px;margin-right:8px}
+.foot{position:absolute;left:44px;top:1190px;font-size:14.5px;color:var(--muted)}
+</style></head><body>
+
+<h1>TaskFusion — Role-based Agentic SDLC Plugin Architecture</h1>
+<div class="sub">Claude Code plugin · v1.1 · 5 role agents · 9 skills · 2 guardrail hooks · stack-agnostic · new and legacy codebases</div>
+
+<!-- Engineer -->
+<div class="box" style="left:44px;top:155px;width:290px;height:182px;padding:22px 20px">
+  <svg width="48" height="76" style="position:absolute;left:20px;top:24px"><circle cx="24" cy="20" r="18" fill="none" stroke="#3b4350" stroke-width="2.5"/><path d="M2 74 Q24 46 46 74" fill="none" stroke="#3b4350" stroke-width="2.5"/></svg>
+  <div style="margin-left:60px;font-size:19px;font-weight:700">Engineer</div>
+  <div style="margin-left:60px;font-size:15px;color:var(--muted)">(approver)</div>
+  <div style="font-size:14.5px;margin-top:42px;line-height:1.55">Runs /task-fusion:* commands<br>Approves context, requirements,<br>design and plan</div>
+</div>
+<svg style="position:absolute;left:334px;top:228px" width="44" height="20"><line x1="0" y1="10" x2="34" y2="10" stroke="#6b7686" stroke-width="2"/><path d="M34 4 L43 10 L34 16 Z" fill="#6b7686"/></svg>
+
+<!-- Marketplace -->
+<div class="box" style="left:44px;top:906px;width:290px;height:196px;padding:18px 20px">
+  <div style="font-size:19px;font-weight:700">Team Marketplace</div>
+  <div style="font-size:14.5px;color:var(--muted);margin-top:4px">Git repo (can be private)</div>
+  <div class="mono" style="font-size:11.5px;line-height:1.75;margin-top:14px">.claude-plugin/marketplace.json<br>plugins/task-fusion/</div>
+  <div class="mono" style="font-size:11.5px;line-height:1.6;margin-top:10px">claude plugin install<br>task-fusion@task-fusion-marketplace</div>
+</div>
+<div style="position:absolute;left:336px;top:976px;font-size:12px;color:var(--muted)">installs</div>
+<svg style="position:absolute;left:334px;top:992px" width="44" height="20"><line x1="0" y1="10" x2="34" y2="10" stroke="#6b7686" stroke-width="2"/><path d="M34 4 L43 10 L34 16 Z" fill="#6b7686"/></svg>
+
+<!-- Session panel -->
+<div class="box panel" style="left:378px;top:133px;width:1222px;height:972px"></div>
+<div style="position:absolute;left:404px;top:150px;font-size:20px;font-weight:700">Claude Code session <span style="font-size:16px;font-weight:400;color:var(--muted);margin-left:16px">· TaskFusion plugin (task-fusion)</span></div>
+
+<div class="label" style="position:absolute;left:400px;top:197px">Orchestration skills</div>
+<div class="cmd" style="position:absolute;left:400px;top:220px;width:330px;height:72px">
+  <div class="t mono">/task-fusion:init</div><div class="d">CLAUDE.md (incl. constraints) + .task-fusion/</div>
+</div>
+<div class="cmd" style="position:absolute;left:746px;top:220px;width:834px;height:72px">
+  <div class="t mono">/task-fusion:flow</div><div class="d">Orchestrator: context check (suggests discover) → triage (Small skips requirements + design) → stages in order → gates</div>
+</div>
+
+<div class="label" style="position:absolute;left:400px;top:322px">Stage skills (colour = agent doing the work)</div>
+<div style="position:absolute;left:400px;top:372px;width:1180px">
+  <div class="row">
+    <div class="stage" style="border-color:var(--ca);border-style:dashed;background:var(--ca-bg)"><div class="hd" style="background:var(--ca)">Code Archaeologist</div><div class="nm">Discover</div><div class="sk mono" style="color:var(--ca)">:discover</div><div class="out mono">context/*.md<br><span style="font-family:Inter,-apple-system,sans-serif;font-size:11px">legacy · optional</span></div></div>
+    <div class="arrow">➜</div>
+    <div class="stage" style="border-color:var(--ba);background:var(--ba-bg)"><div class="hd" style="background:var(--ba)">Business Analyst</div><div class="nm">Requirements</div><div class="sk mono" style="color:var(--ba)">:requirements</div><div class="out mono">requirements/<br>&lt;id&gt;.md</div></div>
+    <div class="arrow">➜</div>
+    <div class="stage" style="border-color:var(--ar);background:var(--ar-bg)"><div class="hd" style="background:var(--ar)">Architect</div><div class="nm">Design</div><div class="sk mono" style="color:var(--ar)">:design</div><div class="out mono">designs/&lt;id&gt;.md</div></div>
+    <div class="arrow">➜</div>
+    <div class="stage" style="border-color:var(--tl);background:var(--tl-bg)"><div class="hd" style="background:var(--tl)">Tech Lead</div><div class="nm">Plan</div><div class="sk mono" style="color:var(--tl)">:plan</div><div class="out mono">plans/&lt;id&gt;.md<br><span style="font-family:Inter,-apple-system,sans-serif;font-size:11px">+ characterisation tests</span></div></div>
+    <div class="arrow">➜</div>
+    <div class="stage" style="border-color:var(--dv);background:var(--dv-bg)"><div class="hd" style="background:var(--dv)">Developer</div><div class="nm">Implement</div><div class="sk mono" style="color:var(--dv)">:implement</div><div class="out mono">code + tests<br><span style="font-family:Inter,-apple-system,sans-serif;font-size:11px">minimal diff</span></div></div>
+    <div class="arrow">➜</div>
+    <div class="stage" style="border-color:var(--tl);background:var(--tl-bg)"><div class="hd" style="background:var(--tl)">Tech Lead</div><div class="nm">Review</div><div class="sk mono" style="color:var(--tl)">:review</div><div class="out mono">&lt;id&gt;-review.md</div></div>
+    <div class="arrow">➜</div>
+    <div class="stage" style="border-color:var(--tl);background:var(--tl-bg)"><div class="hd" style="background:var(--tl)">Tech Lead</div><div class="nm">Verify</div><div class="sk mono" style="color:var(--tl)">:verify</div><div class="out mono">&lt;id&gt;-verify.md<br><span style="font-family:Inter,-apple-system,sans-serif;font-size:11px">CI evidence accepted</span></div></div>
+  </div>
+  <!-- gates: arrow centres at i*172+160 -->
+  <div class="gate" style="left:132px;top:-28px">GATE</div>
+  <div class="gate" style="left:304px;top:-28px">GATE</div>
+  <div class="gate" style="left:476px;top:-28px">GATE</div>
+  <div class="gate" style="left:648px;top:-28px">GATE</div>
+  <svg style="position:absolute;left:0;top:-6px;overflow:visible" width="1180" height="80">
+    <g stroke="var(--gate)" stroke-width="1.6" stroke-dasharray="3 3"><line x1="160" y1="0" x2="160" y2="72"/><line x1="332" y1="0" x2="332" y2="72"/><line x1="504" y1="0" x2="504" y2="72"/><line x1="676" y1="0" x2="676" y2="72"/></g>
+  </svg>
+  <!-- fix loop Review -> Implement -->
+  <svg style="position:absolute;left:0;top:134px;overflow:visible" width="1180" height="60">
+    <path d="M934 4 Q934 44 848 44 Q770 44 764 12" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-dasharray="5 4"/>
+    <path d="M757 16 L764 2 L771 16 Z" fill="#1d4ed8"/>
+  </svg>
+  <div style="position:absolute;left:780px;top:186px;font-size:13px;font-style:italic;color:var(--tl)">fix approved findings, re-review once</div>
+</div>
+
+<div class="label" style="position:absolute;left:400px;top:600px">Role agents (agents/*.md — each stage skill delegates to its agent; isolated context, scoped tools)</div>
+<div class="row" style="position:absolute;left:400px;top:624px;width:1180px;gap:16px">
+  <div class="agent" style="border-color:var(--ca)"><div class="n" style="color:var(--ca)">Code Archaeologist</div><span class="badge" style="color:var(--ca);border-color:var(--ca)">READ-ONLY</span>
+    <div class="d">Maps legacy code: system map, data flows, business rules, hotspots, constraints</div>
+    <div class="tl">tools (Bash: read-only git)<span class="mono">Read, Grep, Glob, Bash</span></div></div>
+  <div class="agent" style="border-color:var(--ba)"><div class="n" style="color:var(--ba)">Business Analyst</div><span class="badge" style="color:var(--ba);border-color:var(--ba)">READ-ONLY</span>
+    <div class="d">As-is vs to-be, user stories, Given/When/Then AC, NFRs, open questions</div>
+    <div class="tl">tools (Bash: read-only git)<span class="mono">Read, Grep, Glob, Bash</span></div></div>
+  <div class="agent" style="border-color:var(--ar)"><div class="n" style="color:var(--ar)">Architect</div><span class="badge" style="color:var(--ar);border-color:var(--ar)">READ-ONLY</span>
+    <div class="d">Components, data, interfaces, trade-offs; incremental change in legacy code</div>
+    <div class="tl">tools (Bash: read-only git)<span class="mono">Read, Grep, Glob, Bash</span></div></div>
+  <div class="agent" style="border-color:var(--tl)"><div class="n" style="color:var(--tl)">Tech Lead</div><span class="badge" style="color:var(--tl);border-color:var(--tl)">READ-ONLY</span>
+    <div class="d">Plan · Review · Verify modes; independent of the Developer</div>
+    <div class="tl">tools<span class="mono">Read, Grep, Glob, Bash</span></div></div>
+  <div class="agent" style="border-color:var(--dv)"><div class="n" style="color:var(--dv)">Developer</div><span class="badge" style="color:#fff;background:var(--dv);border-color:var(--dv)">WRITES CODE</span>
+    <div class="d">Characterisation tests first, then the plan task by task; fixes findings</div>
+    <div class="tl">tools<span class="mono">Read, Grep, Glob, Edit, Write, Bash</span></div></div>
+</div>
+
+<div class="label" style="position:absolute;left:400px;top:856px">Guardrail hooks (hooks/hooks.json)</div>
+<div class="hook" style="position:absolute;left:400px;top:880px;width:578px;border-color:var(--red);background:#fef2f2">
+  <div class="h" style="color:var(--red)">PreToolUse · Bash <span class="mono">scripts/guard-bash.sh</span> <span style="font-weight:400;color:var(--muted);font-size:13px;margin-left:8px">always on</span></div>
+  <div class="d">Blocks (exit 2): force push, reset --hard, rm -rf / or ~,<br>DROP / TRUNCATE / dropDatabase(), mkfs, curl | sh</div>
+</div>
+<div class="hook" style="position:absolute;left:1000px;top:880px;width:580px;border-color:#3b4350">
+  <div class="h">PostToolUse · Write | Edit <span class="mono">scripts/format-file.sh</span></div>
+  <div class="d"><b>Opt-in:</b> runs only if .task-fusion/format-on-edit exists<br>prettier · black · gofmt (if installed) — never blocks</div>
+</div>
+
+<div style="position:absolute;left:400px;top:1004px;width:1180px;height:80px;border:2px dashed #aab3c0;border-radius:10px;padding:14px 18px">
+  <div style="font-size:15px;font-weight:700;color:#3b4350">Optional .mcp.json (added per team)</div>
+  <div style="font-size:14.5px;color:var(--muted);margin-top:8px">Issue tracker · Git host · wiki — tokens supplied via userConfig (sensitive: true), never hard-coded</div>
+</div>
+
+<!-- r/w arrows -->
+<div style="position:absolute;left:1610px;top:422px;font-size:12px;color:var(--muted)">r/w</div>
+<svg style="position:absolute;left:1600px;top:436px" width="46" height="44"><line x1="2" y1="8" x2="34" y2="8" stroke="#6b7686" stroke-width="2"/><path d="M34 2 L44 8 L34 14 Z" fill="#6b7686"/><line x1="12" y1="34" x2="44" y2="34" stroke="#6b7686" stroke-width="2"/><path d="M12 28 L2 34 L12 40 Z" fill="#6b7686"/></svg>
+
+<!-- Repository -->
+<div class="box panel" style="left:1645px;top:133px;width:311px;height:972px;padding:18px 18px">
+  <div style="font-size:20px;font-weight:700">Project repository</div>
+  <div style="font-size:14.5px;color:var(--muted);margin:4px 0 16px">Shared memory between stages</div>
+  <div class="repo" style="border-left-color:#3b4350"><div class="p mono">CLAUDE.md</div><div class="d">build · test · lint commands, structure, conventions, constraints, do-nots</div></div>
+  <div class="repo" style="border-left-color:var(--ca)"><div class="p mono">.task-fusion/context/<span class="new">NEW</span></div><div class="d">system-map · modules/ · data-flows · glossary · business-rules · hotspots · constraints</div></div>
+  <div class="repo" style="border-left-color:var(--ba)"><div class="p mono">.task-fusion/requirements/</div><div class="d">&lt;id&gt;.md · Status: Draft→Approved</div></div>
+  <div class="repo" style="border-left-color:var(--ar)"><div class="p mono">.task-fusion/designs/</div><div class="d">&lt;id&gt;.md · Status: Draft→Approved</div></div>
+  <div class="repo" style="border-left-color:var(--tl)"><div class="p mono">.task-fusion/plans/</div><div class="d">&lt;id&gt;.md · Status: Draft→Approved</div></div>
+  <div class="repo" style="border-left-color:var(--tl)"><div class="p mono">.task-fusion/reports/</div><div class="d">&lt;id&gt;-review.md<br>&lt;id&gt;-verify.md</div></div>
+  <div class="repo" style="border-left-color:#8a94a3;border-style:dashed;border-left-style:solid"><div class="p mono">.task-fusion/format-on-edit</div><div class="d"><span class="new" style="margin:0 6px 0 0">NEW</span>optional marker: turns the formatter on</div></div>
+  <div class="repo" style="border-left-color:var(--dv)"><div class="p mono">src/ · tests/</div><div class="d">code and tests changed by the Developer agent only</div></div>
+  <div style="font-size:14px;font-weight:700;margin-top:16px">Work item id:</div>
+  <div class="mono" style="font-size:13px;margin-top:4px">&lt;YYYYMMDD&gt;-&lt;slug&gt;</div>
+  <div style="font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.45">links every artifact of<br>one change end to end</div>
+</div>
+
+<div class="legend">
+  <b>Legend</b>
+  <span><span class="sw" style="background:var(--ca)"></span>Code Archaeologist</span>
+  <span><span class="sw" style="background:var(--ba)"></span>Business Analyst</span>
+  <span><span class="sw" style="background:var(--ar)"></span>Architect</span>
+  <span><span class="sw" style="background:var(--tl)"></span>Tech Lead</span>
+  <span><span class="sw" style="background:var(--dv)"></span>Developer</span>
+  <span><span class="gate" style="position:static;margin-right:8px">GATE</span>Human approval before next stage</span>
+  <span><span class="sw" style="border:2px solid var(--red);background:#fff"></span>Guardrail hook</span>
+  <span><span style="display:inline-block;width:34px;border-top:2px dashed #8a94a3;vertical-align:4px;margin-right:8px"></span>Optional / per team</span>
+</div>
+<div class="foot">Flow: /task-fusion:init → /task-fusion:discover (legacy) → GATE → /task-fusion:flow &lt;request&gt; → Requirements → GATE → Design → GATE → Plan (+ characterisation tests) → GATE → Implement → Review (fix loop) → Verify → READY / NOT READY</div>
+</body></html>
