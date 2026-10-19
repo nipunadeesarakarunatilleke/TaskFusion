@@ -8,7 +8,7 @@ argument-hint: [work item id]
 
 Work item: $ARGUMENTS
 
-1. Load the requirements, plan and latest review report for the work item.
+1. Load the requirements, plan and latest review report for the work item (the argument above; otherwise the only active work item in .task-fusion/index.md; if there are several, ask which one).
 2. Delegate to the task-fusion:tech-lead agent in verification mode.
 3. Produce a checklist with PASS, FAIL or N/A and evidence for each item:
    - Every acceptance criterion (AC-n) is met and covered by a test or a documented manual check
@@ -23,3 +23,5 @@ Work item: $ARGUMENTS
 4. When a check cannot run locally (CLAUDE.md or .task-fusion/context/constraints.md says so), mark it PASS only with evidence from a CI run or a documented manual check, and name the source. Without evidence, mark it FAIL.
 5. Write the result to .task-fusion/reports/<id>-verify.md.
 6. Verdict: READY only if every item is PASS or N/A; otherwise NOT READY with the items to fix.
+7. If the verdict is READY and .task-fusion/context/ exists, bring the system knowledge up to date: list the context files this change makes out of date (modules touched, business rules added or changed, new glossary terms, new constraints). Propose the updates as a diff and apply them if the user agrees, refreshing each changed file's "Last updated" and "Commit" lines.
+8. Update the index row: stage Done when the verdict is READY and step 7 is finished; otherwise stage Verify, status NOT READY.

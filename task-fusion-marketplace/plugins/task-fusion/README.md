@@ -25,6 +25,7 @@ TaskFusion is a Claude Code plugin that packages a generic, role-based agentic S
 | Review | `/task-fusion:review` | Tech Lead | `.task-fusion/reports/<id>-review.md` |
 | Verify | `/task-fusion:verify` | Tech Lead | `.task-fusion/reports/<id>-verify.md` (READY / NOT READY) |
 | End to end | `/task-fusion:flow` | All | Runs every stage with the gates above |
+| Status | `/task-fusion:status` | — | Work items, what each is waiting for, out-of-date context |
 
 ## Guardrails
 
@@ -49,13 +50,27 @@ claude plugin install task-fusion@task-fusion-marketplace
 /task-fusion:init
 /task-fusion:discover            # existing or legacy codebase
 /task-fusion:flow <request>
+/task-fusion:status              # where is everything up to?
 ```
 
 ## Files created in a project
 
 - `CLAUDE.md`
 - `.task-fusion/` with `context/`, `requirements/`, `designs/`, `plans/` and `reports/`
+- `.task-fusion/index.md`: one row per work item (stage, status, branch, last updated)
+- `.task-fusion/context/decisions.md`: decision log, added to whenever a design is approved
 - `.task-fusion/format-on-edit` only if you enable formatting
+
+## How project knowledge is managed
+
+Everything lives in files in the repository, so work survives between sessions and is shared with the team:
+
+- **`CLAUDE.md`** holds commands, conventions and constraints, and is loaded into every session.
+- **`.task-fusion/context/`** holds system knowledge, read by each stage as needed. Verify updates it after every READY change, and `/task-fusion:status` flags module files whose code has changed since they were written.
+- **Work item artifacts** in `requirements/`, `designs/`, `plans/` and `reports/` share one id and are tracked in `index.md`. Acceptance criteria numbers (AC-1, AC-2 …) trace each requirement to its design, tasks, tests and verification.
+- **Agents** each run in their own context and receive only the files their stage needs.
+
+Commit `.task-fusion/` (context, requirements, designs, plans and `index.md`) so the team shares one picture of the project. `reports/` is optional.
 
 ## Working with legacy code
 

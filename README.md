@@ -29,7 +29,9 @@ In the repository you want to work on:
 /task-fusion:flow <request>       # requirements → design → plan → implement → review → verify
 ```
 
-Each stage also has its own command (`/task-fusion:requirements`, `:design`, `:plan`, `:implement`, `:review`, `:verify`).
+Each stage also has its own command (`/task-fusion:requirements`, `:design`, `:plan`, `:implement`, `:review`, `:verify`), and `/task-fusion:status` shows every work item, what it is waiting for, and any project context that has gone out of date.
+
+Project knowledge is kept in the repository: `CLAUDE.md` for commands and conventions, `.task-fusion/context/` for system knowledge and the decision log, and one set of artifacts per change, tracked in `.task-fusion/index.md`. Commit `.task-fusion/` so the whole team works from the same picture.
 
 ## What's in the box
 

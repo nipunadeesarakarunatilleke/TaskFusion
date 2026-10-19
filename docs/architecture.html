@@ -54,7 +54,7 @@ h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;
 </style></head><body>
 
 <h1>TaskFusion — Role-based Agentic SDLC Plugin Architecture</h1>
-<div class="sub">Claude Code plugin · v1.1 · 5 role agents · 9 skills · 2 guardrail hooks · stack-agnostic · new and legacy codebases</div>
+<div class="sub">Claude Code plugin · v1.2 · 5 role agents · 10 skills · 2 guardrail hooks · stack-agnostic · new and legacy codebases</div>
 
 <!-- Engineer -->
 <div class="box" style="left:44px;top:155px;width:290px;height:182px;padding:22px 20px">
@@ -80,11 +80,14 @@ h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;
 <div style="position:absolute;left:404px;top:150px;font-size:20px;font-weight:700">Claude Code session <span style="font-size:16px;font-weight:400;color:var(--muted);margin-left:16px">· TaskFusion plugin (task-fusion)</span></div>
 
 <div class="label" style="position:absolute;left:400px;top:197px">Orchestration skills</div>
-<div class="cmd" style="position:absolute;left:400px;top:220px;width:330px;height:72px">
-  <div class="t mono">/task-fusion:init</div><div class="d">CLAUDE.md (incl. constraints) + .task-fusion/</div>
+<div class="cmd" style="position:absolute;left:400px;top:220px;width:300px;height:72px">
+  <div class="t mono">/task-fusion:init</div><div class="d">CLAUDE.md + .task-fusion/ + index</div>
 </div>
-<div class="cmd" style="position:absolute;left:746px;top:220px;width:834px;height:72px">
-  <div class="t mono">/task-fusion:flow</div><div class="d">Orchestrator: context check (suggests discover) → triage (Small skips requirements + design) → stages in order → gates</div>
+<div class="cmd" style="position:absolute;left:716px;top:220px;width:300px;height:72px">
+  <div class="t mono">/task-fusion:status</div><div class="d">Work items, next step, stale context</div>
+</div>
+<div class="cmd" style="position:absolute;left:1032px;top:220px;width:548px;height:72px">
+  <div class="t mono">/task-fusion:flow</div><div class="d">Orchestrator: context check → triage → stages in order → gates</div>
 </div>
 
 <div class="label" style="position:absolute;left:400px;top:322px">Stage skills (colour = agent doing the work)</div>
@@ -94,7 +97,7 @@ h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;
     <div class="arrow">➜</div>
     <div class="stage" style="border-color:var(--ba);background:var(--ba-bg)"><div class="hd" style="background:var(--ba)">Business Analyst</div><div class="nm">Requirements</div><div class="sk mono" style="color:var(--ba)">:requirements</div><div class="out mono">requirements/<br>&lt;id&gt;.md</div></div>
     <div class="arrow">➜</div>
-    <div class="stage" style="border-color:var(--ar);background:var(--ar-bg)"><div class="hd" style="background:var(--ar)">Architect</div><div class="nm">Design</div><div class="sk mono" style="color:var(--ar)">:design</div><div class="out mono">designs/&lt;id&gt;.md</div></div>
+    <div class="stage" style="border-color:var(--ar);background:var(--ar-bg)"><div class="hd" style="background:var(--ar)">Architect</div><div class="nm">Design</div><div class="sk mono" style="color:var(--ar)">:design</div><div class="out mono">designs/&lt;id&gt;.md<br><span style="font-family:Inter,-apple-system,sans-serif;font-size:11px">+ decisions.md</span></div></div>
     <div class="arrow">➜</div>
     <div class="stage" style="border-color:var(--tl);background:var(--tl-bg)"><div class="hd" style="background:var(--tl)">Tech Lead</div><div class="nm">Plan</div><div class="sk mono" style="color:var(--tl)">:plan</div><div class="out mono">plans/&lt;id&gt;.md<br><span style="font-family:Inter,-apple-system,sans-serif;font-size:11px">+ characterisation tests</span></div></div>
     <div class="arrow">➜</div>
@@ -102,7 +105,7 @@ h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;
     <div class="arrow">➜</div>
     <div class="stage" style="border-color:var(--tl);background:var(--tl-bg)"><div class="hd" style="background:var(--tl)">Tech Lead</div><div class="nm">Review</div><div class="sk mono" style="color:var(--tl)">:review</div><div class="out mono">&lt;id&gt;-review.md</div></div>
     <div class="arrow">➜</div>
-    <div class="stage" style="border-color:var(--tl);background:var(--tl-bg)"><div class="hd" style="background:var(--tl)">Tech Lead</div><div class="nm">Verify</div><div class="sk mono" style="color:var(--tl)">:verify</div><div class="out mono">&lt;id&gt;-verify.md<br><span style="font-family:Inter,-apple-system,sans-serif;font-size:11px">CI evidence accepted</span></div></div>
+    <div class="stage" style="border-color:var(--tl);background:var(--tl-bg)"><div class="hd" style="background:var(--tl)">Tech Lead</div><div class="nm">Verify</div><div class="sk mono" style="color:var(--tl)">:verify</div><div class="out mono">&lt;id&gt;-verify.md<br><span style="font-family:Inter,-apple-system,sans-serif;font-size:11px">+ context refresh</span></div></div>
   </div>
   <!-- gates: arrow centres at i*172+160 -->
   <div class="gate" style="left:132px;top:-28px">GATE</div>
@@ -163,7 +166,8 @@ h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;
   <div style="font-size:20px;font-weight:700">Project repository</div>
   <div style="font-size:14.5px;color:var(--muted);margin:4px 0 16px">Shared memory between stages</div>
   <div class="repo" style="border-left-color:#3b4350"><div class="p mono">CLAUDE.md</div><div class="d">build · test · lint commands, structure, conventions, constraints, do-nots</div></div>
-  <div class="repo" style="border-left-color:var(--ca)"><div class="p mono">.task-fusion/context/<span class="new">NEW</span></div><div class="d">system-map · modules/ · data-flows · glossary · business-rules · hotspots · constraints</div></div>
+  <div class="repo" style="border-left-color:var(--ca)"><div class="p mono">.task-fusion/context/<span class="new">NEW</span></div><div class="d">system-map · modules/ · data-flows · glossary · business-rules · hotspots · constraints · decisions; refreshed by verify</div></div>
+  <div class="repo" style="border-left-color:#3b4350"><div class="p mono">.task-fusion/index.md<span class="new">NEW</span></div><div class="d">one row per work item: stage · status · branch</div></div>
   <div class="repo" style="border-left-color:var(--ba)"><div class="p mono">.task-fusion/requirements/</div><div class="d">&lt;id&gt;.md · Status: Draft→Approved</div></div>
   <div class="repo" style="border-left-color:var(--ar)"><div class="p mono">.task-fusion/designs/</div><div class="d">&lt;id&gt;.md · Status: Draft→Approved</div></div>
   <div class="repo" style="border-left-color:var(--tl)"><div class="p mono">.task-fusion/plans/</div><div class="d">&lt;id&gt;.md · Status: Draft→Approved</div></div>
@@ -186,5 +190,5 @@ h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;
   <span><span class="sw" style="border:2px solid var(--red);background:#fff"></span>Guardrail hook</span>
   <span><span style="display:inline-block;width:34px;border-top:2px dashed #8a94a3;vertical-align:4px;margin-right:8px"></span>Optional / per team</span>
 </div>
-<div class="foot">Flow: /task-fusion:init → /task-fusion:discover (legacy) → GATE → /task-fusion:flow &lt;request&gt; → Requirements → GATE → Design → GATE → Plan (+ characterisation tests) → GATE → Implement → Review (fix loop) → Verify → READY / NOT READY</div>
+<div class="foot">Flow: /task-fusion:init → /task-fusion:discover (legacy) → GATE → /task-fusion:flow &lt;request&gt; → Requirements → GATE → Design → GATE → Plan (+ characterisation tests) → GATE → Implement → Review (fix loop) → Verify → READY → context refresh · /task-fusion:status at any time</div>
 </body></html>

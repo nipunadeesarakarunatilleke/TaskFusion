@@ -22,9 +22,15 @@ Goal: give every later TaskFusion stage reliable, project-specific context.
    - ## Constraints (runtime and framework versions, environment limits, test coverage)
    - ## Do not (things that must never be changed or run)
 8. For a large repository with several major modules, offer to create a short CLAUDE.md inside each major module folder with that module's commands and conventions. Only create them if the user agrees.
-9. Create .task-fusion/ with the subfolders context/, requirements/, designs/, plans/ and reports/ if they do not exist.
-10. Ask the user whether .task-fusion/reports/ should be added to .gitignore. Only change .gitignore if they agree.
+9. Create .task-fusion/ with the subfolders context/, requirements/, designs/, plans/ and reports/ if they do not exist, and an index.md that contains only the work item table header shown below.
+10. Recommend committing .task-fusion/ (context/, requirements/, designs/, plans/ and index.md) so the whole team shares the same project knowledge. Ask whether reports/ should be committed too or added to .gitignore. Only change .gitignore if they agree.
 11. Ask the user whether TaskFusion should format files automatically after each edit. Recommend "no" for legacy or unformatted code, because formatting a whole file turns a small fix into a large diff. If they agree, create the empty file .task-fusion/format-on-edit.
-12. Finish with a short summary. If the repository is large, old or poorly documented, suggest /task-fusion:discover as the next step; otherwise suggest /task-fusion:requirements or /task-fusion:flow.
+12. Finish with a short summary. If the repository is large, old or poorly documented, suggest /task-fusion:discover as the next step; otherwise suggest /task-fusion:requirements or /task-fusion:flow. Mention /task-fusion:status for checking progress later.
 
 Keep CLAUDE.md under about 150 lines. It is loaded into every session, so every line must earn its place. Detailed knowledge of the system belongs in .task-fusion/context/, which /task-fusion:discover creates.
+
+Index format (.task-fusion/index.md; one row per work item):
+
+   # TaskFusion work items
+   | Work item | Title | Stage | Status | Branch | Updated |
+   |---|---|---|---|---|---|
