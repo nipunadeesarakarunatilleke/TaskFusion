@@ -41,7 +41,7 @@ h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;
 .agent .tl .mono{font-size:11px;color:var(--ink);display:block;margin-top:3px}
 .hook{border:2px solid;border-radius:10px;padding:14px 18px;height:104px}
 .hook .h{font-size:15px;font-weight:700}
-.hook .h .mono{font-weight:400;margin-left:30px;color:var(--ink);font-size:14.5px}
+.hook .h .mono{font-weight:400;margin-left:12px;color:var(--ink);font-size:14.5px}
 .hook .d{font-size:14.5px;line-height:1.5;margin-top:8px}
 .repo{border:1.5px solid var(--line);border-left:5px solid;border-radius:8px;padding:9px 14px;margin-bottom:11px;background:#fff}
 .repo .p{font-size:13.5px;font-weight:600}
@@ -54,7 +54,7 @@ h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;
 </style></head><body>
 
 <h1>TaskFusion — Role-based Agentic SDLC Plugin Architecture</h1>
-<div class="sub">Claude Code plugin · v1.2 · 5 role agents · 10 skills · 2 guardrail hooks · stack-agnostic · new and legacy codebases</div>
+<div class="sub">Claude Code plugin · v1.3 · 5 role agents · 10 skills · 3 guardrail hooks · stack-agnostic · new and legacy codebases</div>
 
 <!-- Engineer -->
 <div class="box" style="left:44px;top:155px;width:290px;height:182px;padding:22px 20px">
@@ -135,21 +135,25 @@ h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;
     <div class="d">Components, data, interfaces, trade-offs; incremental change in legacy code</div>
     <div class="tl">tools (Bash: read-only git)<span class="mono">Read, Grep, Glob, Bash</span></div></div>
   <div class="agent" style="border-color:var(--tl)"><div class="n" style="color:var(--tl)">Tech Lead</div><span class="badge" style="color:var(--tl);border-color:var(--tl)">READ-ONLY</span>
-    <div class="d">Plan · Review · Verify modes; independent of the Developer</div>
+    <div class="d">Plan · Review · Verify; findings re-checked against the code, evidence saved</div>
     <div class="tl">tools<span class="mono">Read, Grep, Glob, Bash</span></div></div>
   <div class="agent" style="border-color:var(--dv)"><div class="n" style="color:var(--dv)">Developer</div><span class="badge" style="color:#fff;background:var(--dv);border-color:var(--dv)">WRITES CODE</span>
-    <div class="d">Characterisation tests first, then the plan task by task; fixes findings</div>
+    <div class="d">Tests first from the ACs; checks APIs against installed versions; fixes findings</div>
     <div class="tl">tools<span class="mono">Read, Grep, Glob, Edit, Write, Bash</span></div></div>
 </div>
 
-<div class="label" style="position:absolute;left:400px;top:856px">Guardrail hooks (hooks/hooks.json)</div>
-<div class="hook" style="position:absolute;left:400px;top:880px;width:578px;border-color:var(--red);background:#fef2f2">
-  <div class="h" style="color:var(--red)">PreToolUse · Bash <span class="mono">scripts/guard-bash.sh</span> <span style="font-weight:400;color:var(--muted);font-size:13px;margin-left:8px">always on</span></div>
-  <div class="d">Blocks (exit 2): force push, reset --hard, rm -rf / or ~,<br>DROP / TRUNCATE / dropDatabase(), mkfs, curl | sh</div>
+<div class="label" style="position:absolute;left:400px;top:856px">Guardrail hooks (hooks/hooks.json) · agents back every claim with file:line or command output</div>
+<div class="hook" style="position:absolute;left:400px;top:880px;width:384px;border-color:var(--red);background:#fef2f2">
+  <div class="h" style="color:var(--red)">PreToolUse · Bash <span class="mono">guard-bash.sh</span></div>
+  <div class="d">Blocks destructive commands: force push, <span style="white-space:nowrap">reset --hard</span>, <span style="white-space:nowrap">rm -rf /</span>, DROP TABLE, mkfs, <span style="white-space:nowrap">curl | sh</span></div>
 </div>
-<div class="hook" style="position:absolute;left:1000px;top:880px;width:580px;border-color:#3b4350">
-  <div class="h">PostToolUse · Write | Edit <span class="mono">scripts/format-file.sh</span></div>
-  <div class="d"><b>Opt-in:</b> runs only if .task-fusion/format-on-edit exists<br>prettier · black · gofmt (if installed) — never blocks</div>
+<div class="hook" style="position:absolute;left:798px;top:880px;width:384px;border-color:var(--red);background:#fef2f2">
+  <div class="h" style="color:var(--red)">PreToolUse · Bash <span class="mono">guard-deps.sh</span><span class="new" style="margin-left:8px">NEW</span></div>
+  <div class="d">Blocks installing packages not declared in the manifests; new ones need plan approval</div>
+</div>
+<div class="hook" style="position:absolute;left:1196px;top:880px;width:384px;border-color:#3b4350">
+  <div class="h">PostToolUse · Write | Edit <span class="mono">format-file.sh</span></div>
+  <div class="d"><b>Opt-in</b> via .task-fusion/format-on-edit; prettier · black · gofmt; never blocks</div>
 </div>
 
 <div style="position:absolute;left:400px;top:1004px;width:1180px;height:80px;border:2px dashed #aab3c0;border-radius:10px;padding:14px 18px">
@@ -171,7 +175,7 @@ h1{position:absolute;left:44px;top:30px;margin:0;font-size:33px;font-weight:700;
   <div class="repo" style="border-left-color:var(--ba)"><div class="p mono">.task-fusion/requirements/</div><div class="d">&lt;id&gt;.md · Status: Draft→Approved</div></div>
   <div class="repo" style="border-left-color:var(--ar)"><div class="p mono">.task-fusion/designs/</div><div class="d">&lt;id&gt;.md · Status: Draft→Approved</div></div>
   <div class="repo" style="border-left-color:var(--tl)"><div class="p mono">.task-fusion/plans/</div><div class="d">&lt;id&gt;.md · Status: Draft→Approved</div></div>
-  <div class="repo" style="border-left-color:var(--tl)"><div class="p mono">.task-fusion/reports/</div><div class="d">&lt;id&gt;-review.md<br>&lt;id&gt;-verify.md</div></div>
+  <div class="repo" style="border-left-color:var(--tl)"><div class="p mono">.task-fusion/reports/</div><div class="d">&lt;id&gt;-review.md<br>&lt;id&gt;-verify.md<br>&lt;id&gt;-verify-evidence.md <span class="new" style="margin-left:4px">NEW</span></div></div>
   <div class="repo" style="border-left-color:#8a94a3;border-style:dashed;border-left-style:solid"><div class="p mono">.task-fusion/format-on-edit</div><div class="d"><span class="new" style="margin:0 6px 0 0">NEW</span>optional marker: turns the formatter on</div></div>
   <div class="repo" style="border-left-color:var(--dv)"><div class="p mono">src/ · tests/</div><div class="d">code and tests changed by the Developer agent only</div></div>
   <div style="font-size:14px;font-weight:700;margin-top:16px">Work item id:</div>

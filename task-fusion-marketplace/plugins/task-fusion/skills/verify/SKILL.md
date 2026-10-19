@@ -19,9 +19,10 @@ Work item: $ARGUMENTS
    - No open Critical or Major review findings
    - No debug code, newly added TODOs or secrets in the diff
    - Nothing listed as out of scope was changed
+   - New dependencies in the diff match the plan's New dependencies
    - No unrelated reformatting or whitespace-only changes in the diff
 4. When a check cannot run locally (CLAUDE.md or .task-fusion/context/constraints.md says so), mark it PASS only with evidence from a CI run or a documented manual check, and name the source. Without evidence, mark it FAIL.
-5. Write the result to .task-fusion/reports/<id>-verify.md.
+5. Write the result to .task-fusion/reports/<id>-verify.md, and the raw evidence (each command, its exit code and the relevant output lines) to .task-fusion/reports/<id>-verify-evidence.md. Every PASS in the checklist points to its evidence.
 6. Verdict: READY only if every item is PASS or N/A; otherwise NOT READY with the items to fix.
 7. If the verdict is READY and .task-fusion/context/ exists, bring the system knowledge up to date: list the context files this change makes out of date (modules touched, business rules added or changed, new glossary terms, new constraints). Propose the updates as a diff and apply them if the user agrees, refreshing each changed file's "Last updated" and "Commit" lines.
 8. Update the index row: stage Done when the verdict is READY and step 7 is finished; otherwise stage Verify, status NOT READY.

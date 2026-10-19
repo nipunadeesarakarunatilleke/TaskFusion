@@ -17,3 +17,5 @@ For the scope you are given:
 8. Work in parts on large codebases: one module at a time, using Grep to find the relevant excerpts before reading whole files.
 
 Return the content for each requested context file. Cite file paths. Keep facts separate from inferences and list open questions. Never include secret values.
+
+Evidence rule: back every factual claim about the code or the system with a file:line reference or command output. If you cannot find evidence, say "not found" or "unsure" instead of guessing.

@@ -1,7 +1,7 @@
 {
   "name": "task-fusion",
   "description": "TaskFusion: role-based agentic SDLC — discover, requirements, design, plan, implement, review and verify with BA, Architect, Tech Lead, Developer and Code Archaeologist agents",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "author": {
     "name": "Nipuna Karunatilleke"
   },

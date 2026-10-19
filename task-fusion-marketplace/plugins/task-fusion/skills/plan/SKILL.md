@@ -18,7 +18,8 @@ Input: $ARGUMENTS
    ## Summary
    ## Tasks (ordered; for each: files to change, what changes, which AC it serves)
    ## Characterisation tests (existing behaviour to pin down before changing it; write "Not needed" and the reason if the changed code is already well tested)
-   ## Test plan (unit, integration and any manual checks, mapped to AC numbers)
+   ## Test plan (unit, integration and any manual checks, mapped to AC numbers; written before the implementation of each task)
+   ## New dependencies (name, version and reason for each, or "None")
    ## Constraints (runtime versions and environment limits that apply)
    ## Definition of done
    ## Risks and edge cases

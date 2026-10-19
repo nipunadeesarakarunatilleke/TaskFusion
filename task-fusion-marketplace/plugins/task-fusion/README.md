@@ -30,6 +30,7 @@ TaskFusion is a Claude Code plugin that packages a generic, role-based agentic S
 ## Guardrails
 
 - **`scripts/guard-bash.sh`** (PreToolUse on Bash) blocks destructive commands: `rm -rf` on `/`, `~` or `$HOME`, force pushes, `git reset --hard`, `git clean -f`, `git branch -D`, SQL `DROP`/`TRUNCATE`, MongoDB `.drop()`/`dropDatabase()`, `mkfs`, `dd` to a device, `chmod -R 777`, and piping `curl`/`wget` into a shell.
+- **`scripts/guard-deps.sh`** (PreToolUse on Bash) blocks installing a package that isn't declared in the project's manifests (`npm install <pkg>`, `pip install <pkg>`, `poetry add`, `go get`, `cargo add`, `dotnet add package` and others). Installing from the manifests is always allowed. New dependencies go through the plan's New dependencies section and your approval.
 - **`scripts/format-file.sh`** (PostToolUse on Write/Edit) formats the edited file with prettier (from `node_modules/.bin`), black or gofmt when present. It is **opt-in**: it does nothing unless `.task-fusion/format-on-edit` exists in the project, so legacy files are not reformatted wholesale.
 
 ## Requirements
@@ -61,6 +62,15 @@ claude plugin install task-fusion@task-fusion-marketplace
 - `.task-fusion/context/decisions.md`: decision log, added to whenever a design is approved
 - `.task-fusion/format-on-edit` only if you enable formatting
 
+## Guarding against hallucinated code
+
+- **Evidence rule:** every agent backs factual claims with a file:line reference or command output, and says "not found" or "unsure" instead of guessing.
+- **Tests first:** each task's tests are written from its acceptance criteria and must fail before the implementation makes them pass.
+- **Real APIs only:** the developer checks third-party APIs against the installed version and never mocks an API it hasn't confirmed exists. Review checks this too.
+- **Dependency guard:** packages not declared in the manifests can't be installed without your approval.
+- **Checked findings:** the Tech Lead re-reads the cited code for every review finding and drops any it can't confirm.
+- **Saved evidence:** verify writes each command, exit code and relevant output to `.task-fusion/reports/<id>-verify-evidence.md`, and every PASS points to it.
+
 ## How project knowledge is managed
 
 Everything lives in files in the repository, so work survives between sessions and is shared with the team:
@@ -87,6 +97,6 @@ Later stages build on these documents:
 
 - Project build, test and lint commands live in the project's `CLAUDE.md`, not in the plugin.
 - Add formatters in `scripts/format-file.sh`.
-- Add blocked patterns to the `patterns` array in `scripts/guard-bash.sh`.
+- Add blocked patterns to the `patterns` array in `scripts/guard-bash.sh`, or another package manager to `scripts/guard-deps.sh`.
 - Add MCP servers in a `.mcp.json` at the plugin root (never hard-code tokens).
 - Adjust the artifact templates in the stage skills (`skills/requirements`, `skills/design`, `skills/plan`).

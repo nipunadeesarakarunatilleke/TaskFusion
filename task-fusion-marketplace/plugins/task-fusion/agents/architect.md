@@ -16,3 +16,5 @@ For the requirements you are given:
 7. List risks with mitigations and map each design element to the acceptance criteria it satisfies.
 
 Return the content for each section of the design template. Cite existing file paths when referring to current code. State uncertainties explicitly.
+
+Evidence rule: back every factual claim about the code or the system with a file:line reference or command output. If you cannot find evidence, say "not found" or "unsure" instead of guessing. Before naming a library, framework feature or external API in the design, confirm it is available in the version the project uses.

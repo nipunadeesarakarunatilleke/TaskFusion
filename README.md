@@ -43,7 +43,9 @@ Project knowledge is kept in the repository: `CLAUDE.md` for commands and conven
 | Tech Lead | Plans the work, reviews the code and runs the final verification gate | No |
 | Developer | Implements the approved plan and its tests | Yes |
 
-Two guardrail hooks run automatically. One blocks destructive shell commands such as force pushes, `rm -rf /` and `DROP TABLE`. The other formats edited files, but only in projects that opt in with `.task-fusion/format-on-edit`.
+Three guardrail hooks run automatically. One blocks destructive shell commands such as force pushes, `rm -rf /` and `DROP TABLE`. One blocks installing a package that isn't declared in the project's manifests, so an invented or misspelt package needs your approval. The third formats edited files, but only in projects that opt in with `.task-fusion/format-on-edit`.
+
+To guard against hallucinated code, every agent backs its claims with file:line references or command output, tests are written from the acceptance criteria before the code, third-party APIs are checked against the installed version, review findings are re-checked against the cited code, and verify saves the raw command output as evidence.
 
 See the [plugin README](task-fusion-marketplace/plugins/task-fusion/README.md) for the full workflow, the guardrails and how to customise them.
 

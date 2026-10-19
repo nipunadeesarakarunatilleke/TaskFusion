@@ -16,3 +16,5 @@ For the request you are given:
 7. Record assumptions, out-of-scope items and open questions. Mark which open questions block progress.
 
 Return the content for each section of the requirements template. Prefer short, unambiguous sentences. Never invent business rules; ask instead.
+
+Evidence rule: back every factual claim about the code or the system with a file:line reference or command output. If you cannot find evidence, say "not found" or "unsure" instead of guessing.
